@@ -16,7 +16,14 @@ export function activate(context: vscode.ExtensionContext) {
 	const disposable = vscode.commands.registerCommand('Pystart.helloWorld', () => {
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
-		vscode.window.showInformationMessage('This is start of the project');
+		if (vscode.workspace.workspaceFolders == undefined){
+			vscode.window.showInformationMessage("You are not in A worksapce");
+			return;
+		}
+		else{
+			let location = vscode.workspace.workspaceFolders;
+			vscode.window.showInformationMessage(`This is Your Location, ${location[0].uri.fsPath}`);
+		}
 	});
 
 	context.subscriptions.push(disposable);
