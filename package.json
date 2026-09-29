@@ -11,11 +11,17 @@
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
+
+
   "contributes": {
     "commands": [
       {
-        "command": "Pystart.helloWorld",
-        "title": "Hello World"
+        "command": "Pystart.start",
+        "title": "PyStart: Start"
+      },
+      {
+        "command": "PyStart.end",
+        "title": "PyStart: End"
       }
     ]
   },
