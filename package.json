@@ -20,7 +20,7 @@
         "title": "PyStart: Start"
       },
       {
-        "command": "PyStart.end",
+        "command": "Pystart.end",
         "title": "PyStart: End"
       }
     ]
