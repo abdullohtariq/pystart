@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { exec } from 'child_process';
+import {exec} from 'child_process';
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -11,11 +11,11 @@ export function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "Pystart" is now active!');
 
 	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
+	// yes so now this will try to actulaly form a envirnment 
 	// The commandId parameter must match the command field in package.json
 	const start = vscode.commands.registerCommand('Pystart.start', () => {
 		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
+		// This If Else will identitfy if user is currently in a workspace or not 
 		if (vscode.workspace.workspaceFolders == undefined){
 			vscode.window.showInformationMessage("You are not in A worksapce");
 			return;
@@ -25,11 +25,10 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showInformationMessage(`This is Your Location, ${location[0].uri.fsPath}`);
 		}
 
+		//This EXEC Runs a function and give results back
 		exec('python --version', (error, stdout, stderr)=>{
-
-			vscode.window.showInformationMessage(stdout);
+			vscode.window.showInformationMessage(stdout)
 		});
-
 
 	});
 
