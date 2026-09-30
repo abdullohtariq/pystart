@@ -14,14 +14,14 @@ export function activate(context: vscode.ExtensionContext) {
 	// yes so now this will try to actulaly form a envirnment 
 	// The commandId parameter must match the command field in package.json
 	const start = vscode.commands.registerCommand('Pystart.start', () => {
+		const location = vscode.workspace.workspaceFolders;
 		// The code you place here will be executed every time your command is executed
 		// This If Else will identitfy if user is currently in a workspace or not 
-		if (vscode.workspace.workspaceFolders == undefined){
+		if (location == undefined){
 			vscode.window.showInformationMessage("You are not in A worksapce");
 			return;
 		}
 		else{
-			let location = vscode.workspace.workspaceFolders;
 			vscode.window.showInformationMessage(`This is Your Location, ${location[0].uri.fsPath}`);
 		}
 
@@ -32,7 +32,11 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showInformationMessage(stdout)
 		});
 
-		exec('python -m venv .venv', (error, stdout, stderr) => {
+		exec('python -m venv .venv',
+			{
+				cwd : location[0].uri.fsPath
+			},
+			(error, stdout, stderr) => {
 			if (error != null){
 				vscode.window.showErrorMessage(`ERROR: ${error.message}`)
 			}
