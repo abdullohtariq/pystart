@@ -26,12 +26,22 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		//This EXEC Runs a function and give results back
+		//we actually dont need to check this function to see that python works oneces the logic of
+		//python -m venv .venv is solid we can move remove this 
 		exec('python --version', (error, stdout, stderr)=>{
 			vscode.window.showInformationMessage(stdout)
 		});
 
-	});
+		exec('python -m venv .venv', (error, stdout, stderr) => {
+			if (error != null){
+				vscode.window.showErrorMessage(`ERROR: ${error.message}`)
+			}
+			});
 
+		});
+
+
+	// this command will be used to terminate the virtual envirnments 
 	const end = vscode.commands.registerCommand('Pystart.end', ()=> {
 		vscode.window.showInformationMessage("PyStart Is Ending Here!!!");
 
