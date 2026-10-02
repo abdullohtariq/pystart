@@ -2,6 +2,9 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import {exec} from 'child_process';
+import { stat } from 'node:fs';
+import { join } from 'node:path';
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -30,15 +33,34 @@ export function activate(context: vscode.ExtensionContext) {
 		//python -m venv .venv is solid we can move remove this 
 		exec('python --version', (error, stdout, stderr)=>{
 			vscode.window.showInformationMessage(stdout)
+			if(error){
+				vscode.window.showInformationMessage(`ERROR: ${error.message}`);
+				return;
+			}
 		});
+ 
 
-		exec('python -m venv .venv',
-			{
-				cwd : location[0].uri.fsPath
-			},
-			(error, stdout, stderr) => {
-			if (error != null){
-				vscode.window.showErrorMessage(`ERROR: ${error.message}`)
+		//try to findout if .venv already exist if yes then dont make it 
+		stat(join(location[0].uri.fsPath, ".venv"), (err, stats) => {
+			if(err == null){
+				vscode.window.showInformationMessage("Something Went Wrong :)");
+			}
+			if(stats.isDirectory()) {
+				//dont do anything but this is in the code instead of != so later we can add
+				//functionally to check wether where .venv works or not
+				vscode.window.showInformationMessage("Venv Aleardy Exist Let us Activate It For You.");
+			}
+			//else just create a .venv folder 
+			else{
+				exec('python -m venv .venv',
+					{
+						cwd : location[0].uri.fsPath
+					},
+					(error, stdout, stderr) => {
+					if (error != null){
+						vscode.window.showErrorMessage(`ERROR: ${error.message}`);
+					}
+					});
 			}
 			});
 
